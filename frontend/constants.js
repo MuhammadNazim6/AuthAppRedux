@@ -1,0 +1,1 @@
+export const staticPath = 'http://localhost:5000/images/'
