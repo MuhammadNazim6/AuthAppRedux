@@ -20,13 +20,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: 'POST', 
       }) 
     }), 
-    // register: builder.mutation({ 
-    //   query: (data)=>({ 
-    //     url:`${USERS_URL}/`, 
-    //     method: 'POST', 
-    //     body: data 
-    //   }), 
-    // }), 
     register: builder.mutation({ 
       query: (formData)=>({ 
         url:`${USERS_URL}/`, 

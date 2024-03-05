@@ -13,7 +13,7 @@ import RegisterScreen from './screens/RegisterScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx'
 
 import Dashboard from "./screens/Dashboard.jsx";
-import { ThemeProvider } from "@material-tailwind/react";
+// import { ThemeProvider } from "@material-tailwind/react";
 import AdminLogin from "./screens/AdminLogin.jsx";
 import AdminPrivateRoute from './components/AdminPrivateRoute .jsx'
 import AddNewUser from './screens/AddNewUser.jsx'
@@ -42,9 +42,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <React.StrictMode>
-       <ThemeProvider>
     <RouterProvider router={router}/>\
-      </ThemeProvider>
   </React.StrictMode>,
   </Provider>
 )
