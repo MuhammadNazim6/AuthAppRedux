@@ -91,14 +91,7 @@ const RegisterScreen = () => {
       console.log(formData.get('photo'));
 
       handleRegistration(formData);
-      // try {
-      //   const res = await register({ name, email, password, mobile }).unwrap();
-      //   dispatch(setCredentials({ ...res }))
-      //   navigate('/')
 
-      // } catch (error) {
-      //   toast.error(err?.data?.message || err.error);
-      // }
     }
   }
 
@@ -106,8 +99,7 @@ const RegisterScreen = () => {
    try {
     console.log('In handle Registration');
     const res = await register(formData).unwrap();
-    console.log(res);
-    console.log('DONE');
+ 
     dispatch(setCredentials({ ...res }))
     navigate('/')
     console.log('Registration successful:', res);
@@ -179,9 +171,6 @@ const RegisterScreen = () => {
               </label>
               )}
           </div>
-          {/* <button onClick={saveimage}  className="h-10 ml-20 w-20 hover:bg-green-500 bg-black rounded-lg text-white hover:scale-105">
-                save
-              </button> */}
         </div>
 
 

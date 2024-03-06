@@ -41,7 +41,7 @@ const logoutAdmin = asyncHandler(async (req, res) => {
 
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({}).select("-password");
-  res.json({ user });
+  res.json({ users });
 });
 
 // @desc    Delete user
@@ -49,6 +49,7 @@ const getUsers = asyncHandler(async (req, res) => {
 //@access   Private
 
 const deleteUser = asyncHandler(async (req, res) => {
+  console.log('In delete user reached');
   const userId = req.query.id;
   if (!userId) {
     res.status(400);
@@ -68,10 +69,11 @@ const deleteUser = asyncHandler(async (req, res) => {
 //route     PATCH /api/admin/users/unblock-block
 //@access   Private
 const blockUnblockUser = asyncHandler(async (req, res) => {
+  console.log('reacing in the blockUnblockUser');
   const userId = req.query.id;
   const user = await User.findById(userId).select("-password");
   if (user) {
-    user.isBlocked = !user.isStatus;
+    user.isBlocked = !user.isBlocked;
     await user.save();
   }
   res.status(200).json(user.isBlocked ? "Blocked" : "Unblocked");
@@ -84,12 +86,11 @@ const blockUnblockUser = asyncHandler(async (req, res) => {
 
 
   const updateUserProfile = asyncHandler(async (req, res) => {
-    console.log("inside the update profiel controller");
     const user = await User.findById(req.body._id);
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      // user.mobile = req.body.mobile || user.mobile;
+      user.mobile = req.body.mobile || user.mobile;
   
       if (req.body.password) {
         user.password = req.body.password;
@@ -101,7 +102,7 @@ const blockUnblockUser = asyncHandler(async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
-        // mobile: updatedUser.mobile,
+        mobile: updatedUser.mobile,
       };
       res.status(200).json(response);
     } else {

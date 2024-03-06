@@ -1,4 +1,3 @@
-// By me
 import { apiSlice } from "./apiSlice";
 
 const ADMIN_URL = '/api/admin'; 
@@ -28,22 +27,22 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     }),
 
     deleteUser: builder.mutation({
-      query: ()=>({
+      query: (data)=>({
         url : `${ADMIN_URL}/users/delete?id=${data}`,
-        method: 'DELETE'
+        method: 'DELETE',
       })
     }),
 
-    updateUser: builder.mutation({
-      query: ()=>({
-        url: `${ADMIN_URL}/users/update-user`,
+    updateUserAdmin: builder.mutation({
+      query: (data)=>({
+        url: `${ADMIN_URL}/users/updateUser`,
         method:'PUT',
         body:data
       })
     }),
     blockUser: builder.mutation({
-      query: ()=>({
-        url: `${ADMIN_URL}/users/block?id=${data}`,
+      query: (data)=>({
+        url: `${ADMIN_URL}/users/blockUnblock?id=${data}`,
         method: 'PATCH'
       })
     })
@@ -57,6 +56,6 @@ export const {
   useAdminLogoutMutation,
   useGetUsersDataMutation,
   useDeleteUserMutation,
-  useUpdateUserMutation,
+  useUpdateUserAdminMutation,
   useBlockUserMutation
 } = adminApiSlice

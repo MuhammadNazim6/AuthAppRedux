@@ -32,6 +32,7 @@ useEffect(()=>{
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({...res}))
+      console.log({...res});
       navigate('/')
     } catch (err) {
       toast.error(err?.data?.message || err.error);

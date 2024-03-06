@@ -18,6 +18,7 @@ const authUser = asyncHandler(async (req,res) =>{
       name:user.name,
       email:user.email,
       mobile:user.mobile,
+      profile:user.profile
     })
   }else{
     res.status(401);
@@ -32,8 +33,8 @@ const authUser = asyncHandler(async (req,res) =>{
 //access Public
 const registerUser = asyncHandler(async (req,res) =>{
   const {name,email,password, mobile } = req.body
-  const profile = `backend/public/images/${req.file.filename}`
-  console.log(profile);
+  const profile = `${req.file.filename}`
+
   const userExists = await User.findOne({email})
 
 if(userExists){
@@ -55,6 +56,8 @@ if(userExists){
       _id:user._id,
       name:user.name,
       email:user.email,
+      profile:user.profile,
+      mobile:user.mobile
     })
   }else{
     res.status(400);
@@ -63,7 +66,6 @@ if(userExists){
 }
 
 })
-
 
 
 
@@ -84,13 +86,13 @@ const logoutUser = asyncHandler(async (req,res) =>{
 // route GET/api/users/profile
 //access Private
 const getUserProfile = asyncHandler(async (req,res) =>{
+
 const user = {
     _id: req.user._id,
     name: req.user.name,
     email: req.user.email,
     mobile: req.user.mobile,
     profile: req.user.profile
-
   }
   res.status(200).json(user)
 })
@@ -102,12 +104,15 @@ const user = {
 //access Private
 const updateUserProfile = asyncHandler(async (req,res) =>{
   const user = await User.findById(req.user._id)
+  // const profile = `${req.file.filename}`
+  // console.log(profile,'Profile file');
 
   if(user){
     user.name = req.body.name ||  user.name
     user.email = req.body.email ||  user.email
     user.mobile = req.body.mobile || user.mobile
-
+    user.profile = req?.file?.filename || user.profile
+    
     if(req.body.password){
       user.password = req.body.password || user.password
     }
@@ -116,7 +121,8 @@ const updateUserProfile = asyncHandler(async (req,res) =>{
     _id:updatedUser._id,
     name:updatedUser.name,
     email:updatedUser.email,
-    mobile:updatedUser.mobile
+    mobile:updatedUser.mobile,
+    profile:updatedUser.profile
   });
   }else{
     res.status(404)

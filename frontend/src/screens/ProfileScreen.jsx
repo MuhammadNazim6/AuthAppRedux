@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer.jsx';
@@ -16,6 +16,13 @@ const ProfileScreen = () => {
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [image , setImage] = useState()
+  const [profile , setProfile ] = useState()
+
+  const [editProf , setEditProf ] = useState(false)
+  const [cancelBtn ,setCancelBtn] = useState(true)
+  const [cancelChanges ,setCancelChanges] = useState(true)
+
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -23,13 +30,28 @@ const ProfileScreen = () => {
   const { userInfo } = useSelector((state) => state.auth)
 
   const [updateProfile,{isLoading}] = useUpdateUserMutation()
+  const inputRef = useRef()
 
   useEffect(() => {
     setName(userInfo.name);
     setEmail(userInfo.email);
     setMobile(userInfo.mobile);
-  }, [userInfo, navigate])
+    setProfile(userInfo.profile);
+    setImage(null)
+  }, [userInfo, navigate , cancelChanges])
 
+  const handleImageChange = (e)=>{
+    setImage(e.target.files[0])
+    
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setView(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } 
+  }
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -62,6 +84,7 @@ const ProfileScreen = () => {
           email,
           password,
           mobile,
+          profile
         }).unwrap();
         dispatch(setCredentials(res));
         toast.success("Profile updated successfully");
@@ -77,9 +100,34 @@ const ProfileScreen = () => {
     <div className='d-flex justify-content-center my-3'>
       <h1> Update Profile</h1>
     </div>
+
     <div className='d-flex justify-content-center'>
-    <img src={`${staticPath}1709650746472.jpg`} style={{'height':'100px','width':'100px','borderRadius':'20px'}}/>
+    {image ? <img src={image && URL.createObjectURL(image)} style={{'height':'100px','width':'100px','borderRadius':'40px','cursor':'pointer'}}/>  : (
+          <img onClick={ ()=>setEditProf(!editProf)} src={`${staticPath+profile}`} style={{'height':'100px','width':'100px','borderRadius':'40px','cursor':'pointer'}}/>
+                    )}
     </div>
+
+    <div className="w-1/2 grid items-center justify-center">
+          <div className="flex">
+          <input
+              type="file" 
+              id="fileInput"
+              accept="image/*"
+              style={{ 
+              'display':'none'
+            }}
+              onChange={(e)=>setImage(e.target.files[0])}
+            />
+
+             { editProf ? (<div className="d-flex justify-content-center">
+              <label className='my-4' htmlFor="fileInput">
+            <span className='m-4' style={{'cursor':'pointer'}}>Edit📋</span>
+              </label>
+              </div>) : null}
+        
+          </div>
+        </div>
+
       <Form onSubmit={submitHandler}>
         {/* NAME */}
         <Form.Group className='my-2' controlId='name'>
@@ -132,9 +180,15 @@ const ProfileScreen = () => {
         </Form.Group>
 
       {isLoading && <Loader/>}
-        <Button type='submit' variant='primary' className='mt-3'>
+      <div className="d-flex justify-content-center mt-4">
+      <Button type='submit' variant='secondary' className='m-4'>
           Update
         </Button>
+
+{      cancelBtn ? (<Button type='button' onClick={()=>setCancelChanges(!cancelChanges)} variant='dark' className='m-4'>
+          Restore to default
+        </Button>): null}
+      </div>
 
       </Form>
     </FormContainer>

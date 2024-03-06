@@ -14,7 +14,7 @@ adminRoutes.post("/auth", authAdmin);
 adminRoutes.post("/logout", logoutAdmin);
 adminRoutes.get("/users", protect, getUsers);
 adminRoutes.delete("/users/delete", protect, deleteUser);
-adminRoutes.patch("/users/unblock-block", protect, blockUnblockUser);
-adminRoutes.put("/users/update-user", updateUserProfile);
+adminRoutes.patch("/users/blockUnblock", protect, blockUnblockUser);
+adminRoutes.put("/users/updateUser", updateUserProfile);
 
 export default adminRoutes;
