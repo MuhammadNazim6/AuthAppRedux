@@ -28,10 +28,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }), 
     }), 
     updateUser: builder.mutation({ 
-      query: (data)=>({ 
+      query: (formData)=>({ 
         url:`${USERS_URL}/profile`, 
         method: 'PUT', 
-        body: data 
+        body: formData 
       }), 
     }), 
     updateImage: builder.mutation({

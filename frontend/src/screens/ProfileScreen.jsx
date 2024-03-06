@@ -78,14 +78,20 @@ const ProfileScreen = () => {
       toast.error("Password do not match");
     } else {
       try {
-        const res = await updateProfile({
-          _id: userInfo._id,
-          name,
-          email,
-          password,
-          mobile,
-          profile
-        }).unwrap();
+        const formData = new FormData();
+        formData.append('name',name)
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('mobile', mobile);
+        if(image){
+          console.log(image);
+          formData.append('profile', image);
+        }else{
+          formData.append('profile', profile);
+        }
+
+        const res = await updateProfile(formData).unwrap();
+
         dispatch(setCredentials(res));
         toast.success("Profile updated successfully");
       } catch (err) {

@@ -104,8 +104,9 @@ const user = {
 //access Private
 const updateUserProfile = asyncHandler(async (req,res) =>{
   const user = await User.findById(req.user._id)
-  // const profile = `${req.file.filename}`
-  // console.log(profile,'Profile file');
+  console.log('Reaching here');
+  const profile = `${req.file.filename}`
+  console.log(profile,'Profile file');
 
   if(user){
     user.name = req.body.name ||  user.name
